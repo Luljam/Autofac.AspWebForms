@@ -7,13 +7,15 @@ namespace WebFormClient
 {
     public partial class Avengers : System.Web.UI.Page
     {
+        public ISuperheroService _SuperheroService { private get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Logger logger = new Logger();
-            AvengerRepository avengerRepository = new AvengerRepository(logger);
-            SuperheroService superheroService = new SuperheroService(avengerRepository, logger);
+            // Modo sem injeção de dependência
+            //Logger logger = new Logger();
+            //AvengerRepository avengerRepository = new AvengerRepository(logger);
+            //SuperheroService superheroService = new SuperheroService(avengerRepository, logger);
 
-            grdAvengers.DataSource = superheroService.GetAvengers();
+            grdAvengers.DataSource = _SuperheroService.GetAvengers();
             grdAvengers.DataBind();
         }
     }
