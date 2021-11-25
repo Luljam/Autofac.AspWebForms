@@ -1,4 +1,7 @@
-﻿using Autofac.Integration.Web;
+﻿using Autofac;
+using Autofac.Integration.Web;
+using Lib;
+using Lib.Abstractions;
 using System;
 using System.Linq;
 using System.Web;
@@ -19,6 +22,15 @@ namespace WebFormClient
         {
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ContainerBuilder builder = new ContainerBuilder();
+
+            builder.RegisterType<AvengerRepository>().As<IAvengerRepository>().InstancePerRequest();
+            builder.RegisterType<Logger>().As<ILogger>().InstancePerRequest();
+            builder.RegisterType<SuperheroService>().As<ISuperheroService>().InstancePerRequest(); 
+
+            IContainer container = builder.Build();
+            _ContainerProvider = new ContainerProvider(container);
         }
     }
 }
